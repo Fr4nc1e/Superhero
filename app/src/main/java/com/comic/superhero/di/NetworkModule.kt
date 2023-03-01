@@ -2,6 +2,7 @@ package com.comic.superhero.di
 
 import com.comic.superhero.core.util.Constant
 import com.comic.superhero.feature.home.data.api.HomeApi
+import com.comic.superhero.feature.search.data.api.SearchApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +34,13 @@ object NetworkModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(HomeApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSearchApi(client: OkHttpClient): SearchApi = Retrofit.Builder()
+        .baseUrl(Constant.BASE_URL)
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(SearchApi::class.java)
 }

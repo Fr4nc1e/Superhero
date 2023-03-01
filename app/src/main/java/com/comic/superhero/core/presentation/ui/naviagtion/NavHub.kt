@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.comic.superhero.core.presentation.ui.naviagtion.destination.Destination
-import com.comic.superhero.feature.detail.DetailScreen
+import com.comic.superhero.feature.detail.presentation.ui.DetailScreen
 import com.comic.superhero.feature.favorite.FavoriteScreen
 import com.comic.superhero.feature.home.presentation.ui.HomeScreen
 import com.comic.superhero.feature.search.presentaion.ui.SearchScreen
@@ -33,7 +33,8 @@ fun NavHub(
         composable(Destination.SearchScreen.route) {
             SearchScreen(
                 modifier = modifier,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                onNavigate = navHostController::navigate
             )
         }
         composable(Destination.FavoriteScreen.route) {

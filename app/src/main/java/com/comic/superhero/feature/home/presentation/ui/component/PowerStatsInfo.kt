@@ -7,9 +7,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.comic.superhero.R
 import com.comic.superhero.core.presentation.ui.util.ColorParser
 import com.comic.superhero.feature.home.domain.model.Powerstats
 
@@ -24,7 +26,7 @@ fun PowerStatsInfo(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "PowerStats",
+            text = stringResource(R.string.power_statics),
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold

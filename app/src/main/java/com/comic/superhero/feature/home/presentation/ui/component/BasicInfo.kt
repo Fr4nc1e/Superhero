@@ -62,7 +62,7 @@ fun BasicInfo(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Biography",
+                text = stringResource(R.string.biography),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Bold
@@ -120,7 +120,7 @@ fun BasicInfo(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Appearance",
+                text = stringResource(R.string.appearance),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Bold
@@ -128,7 +128,7 @@ fun BasicInfo(
             )
 
             superHero.appearance?.height?.let {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty() && it.first() != "-") {
                     Text(
                         text = "Height: ${it[0]} | ${it[1]}",
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -140,7 +140,7 @@ fun BasicInfo(
             }
 
             superHero.appearance?.weight?.let {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty() && it.first() != "- lb") {
                     Text(
                         text = "Weight: ${it[0]} | ${it[1]}",
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -152,7 +152,7 @@ fun BasicInfo(
             }
 
             superHero.appearance?.hairColor?.let {
-                if (it != "-") {
+                if (it != "-" && it != "null") {
                     Text(
                         text = "Hair Color: $it",
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -164,7 +164,7 @@ fun BasicInfo(
             }
 
             superHero.appearance?.eyeColor?.let {
-                if (it != "-") {
+                if (it != "-" && it != "null") {
                     Text(
                         text = "Eye Color: $it",
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -176,7 +176,7 @@ fun BasicInfo(
             }
 
             superHero.appearance?.gender?.let {
-                if (it != "-") {
+                if (it != "-" && it != "null") {
                     Text(
                         text = "Gender: $it",
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -188,7 +188,7 @@ fun BasicInfo(
             }
 
             superHero.appearance?.race?.let {
-                if (it != "-") {
+                if (it != "-" && it != "null") {
                     Text(
                         text = "Race: $it",
                         style = MaterialTheme.typography.bodyMedium.copy(

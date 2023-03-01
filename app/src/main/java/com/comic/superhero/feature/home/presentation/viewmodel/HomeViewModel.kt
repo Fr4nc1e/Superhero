@@ -86,9 +86,7 @@ class HomeViewModel @Inject constructor(
                                 _eventFlow.emit(CoreUiEvent.ShowSnackbar(uiText))
                             }
                         }
-                        is Resource.Loading -> {
-                            _loadingState.value = result.isLoading
-                        }
+                        is Resource.Loading -> { _loadingState.value = result.isLoading }
                         is Resource.Success -> {
                             result.data?.let { hero ->
                                 if (_superHero.value == SuperHero()) {

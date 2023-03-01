@@ -1,7 +1,5 @@
-package com.comic.superhero.feature.home.presentation.ui
+package com.comic.superhero.feature.detail.presentation.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +18,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
@@ -31,17 +28,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.comic.superhero.core.presentation.ui.util.CoreUiEvent
 import com.comic.superhero.core.presentation.ui.util.ImageLoader
 import com.comic.superhero.core.presentation.ui.util.asString
-import com.comic.superhero.feature.home.presentation.event.HomeEvent
+import com.comic.superhero.feature.detail.presentation.viewmodel.DetailViewModel
 import com.comic.superhero.feature.home.presentation.ui.component.BasicInfo
 import com.comic.superhero.feature.home.presentation.ui.component.PowerStatsInfo
-import com.comic.superhero.feature.home.presentation.viewmodel.HomeViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(
+fun DetailScreen(
     modifier: Modifier,
     snackbarHostState: SnackbarHostState,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: DetailViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val superHero = viewModel.superHero.collectAsState().value
@@ -58,7 +53,6 @@ fun HomeScreen(
                         message = event.uiText.asString(context)
                     )
                 }
-
                 else -> {}
             }
         }
@@ -66,7 +60,7 @@ fun HomeScreen(
 
     Box(modifier = modifier.fillMaxSize()) {
         if (isLoading) {
-            CircularProgressIndicator(Modifier.align(Center))
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
 
         LazyColumn(
@@ -86,15 +80,6 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .height(390.dp)
                             .clip(RoundedCornerShape(bottomEnd = 50.dp, bottomStart = 50.dp))
-                            .combinedClickable(
-                                onClick = {},
-                                onDoubleClick = {
-                                    viewModel.apply {
-                                        onEvent(HomeEvent.NextHero)
-                                        onEvent(HomeEvent.GetSuperHero)
-                                    }
-                                }
-                            )
                     ) {
                         ImageLoader(
                             modifier = Modifier
@@ -119,7 +104,7 @@ fun HomeScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(CenterVertically)
+                        .wrapContentHeight(Alignment.CenterVertically)
                         .clip(RoundedCornerShape(45.dp))
                 ) {
                     superHero.powerstats?.let {
