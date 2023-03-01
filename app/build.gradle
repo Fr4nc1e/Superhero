@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-    id 'io.realm.kotlin'
 }
 
 android {
@@ -86,10 +85,6 @@ dependencies {
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
-
-    // MongoDB Realm
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'io.realm.kotlin:library-base:1.6.1'
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.2"
 }
