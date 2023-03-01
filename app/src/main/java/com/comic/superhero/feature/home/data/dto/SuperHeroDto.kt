@@ -5,27 +5,30 @@ import com.google.gson.annotations.SerializedName
 
 data class SuperHeroDto(
     @SerializedName("appearance")
-    val appearance: Appearance?,
+    val appearanceDto: AppearanceDto?,
     @SerializedName("biography")
-    val biography: Biography?,
+    val biographyDto: BiographyDto?,
     @SerializedName("connections")
-    val connections: Connections?,
+    val connectionsDto: ConnectionsDto?,
     @SerializedName("id")
     val id: String?,
     @SerializedName("image")
-    val image: Image?,
+    val imageDto: ImageDto?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("powerstats")
-    val powerstats: Powerstats?,
+    val powerstatsDto: PowerstatsDto?,
     @SerializedName("response")
     val response: String?,
     @SerializedName("work")
-    val work: Work?
+    val workDto: WorkDto?
 ) {
     fun toSuperHero() = SuperHero(
         id = id,
         name = name,
-        imageUrl = image?.url
+        imageUrl = imageDto?.toImage()?.url,
+        powerstats = powerstatsDto?.toPowerStats(),
+        biography = biographyDto?.toBiography(),
+        appearance = appearanceDto?.toAppearance()
     )
 }

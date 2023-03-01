@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 
-class HomeRepository(
+class HomeRepositoryImpl(
     private val api: HomeApi
 ) : HomeRespository {
     override fun getSuperHero(heroId: String): Flow<Resource<SuperHero>> {

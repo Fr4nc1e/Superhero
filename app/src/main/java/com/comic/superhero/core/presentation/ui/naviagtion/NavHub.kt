@@ -4,14 +4,11 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.comic.superhero.core.presentation.ui.naviagtion.destination.Destination
-import com.comic.superhero.feature.detail.DetailScree
 import com.comic.superhero.feature.favorite.FavoriteScreen
-import com.comic.superhero.feature.home.presentation.HomeScreen
+import com.comic.superhero.feature.home.presentation.ui.HomeScreen
 import com.comic.superhero.feature.search.SearchScreen
 
 @Composable
@@ -38,19 +35,6 @@ fun NavHub(
         }
         composable(Destination.FavoriteScreen.route) {
             FavoriteScreen(
-                modifier = modifier,
-                snackbarHostState = snackbarHostState
-            )
-        }
-        composable(
-            route = Destination.DetailScreen.route + "/{heroId}",
-            arguments = listOf(
-                navArgument("heroId") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            DetailScree(
                 modifier = modifier,
                 snackbarHostState = snackbarHostState
             )

@@ -1,9 +1,9 @@
 package com.comic.superhero.feature.home.usecase.component
 
-import com.comic.superhero.feature.home.data.repository.HomeRepository
+import com.comic.superhero.feature.home.domain.repository.HomeRespository
 
 class GetSuperHeroUseCase(
-    private val repository: HomeRepository
+    private val repository: HomeRespository
 ) {
     operator fun invoke(heroId: String) = repository.getSuperHero(heroId)
 }

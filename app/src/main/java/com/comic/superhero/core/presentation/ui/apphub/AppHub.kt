@@ -15,9 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.comic.superhero.core.presentation.ui.naviagtion.NavHub
-import com.comic.superhero.core.presentation.ui.naviagtion.navigationbar.BottomNavigationBar
 import com.comic.superhero.core.presentation.ui.apphub.viewmodel.AppHubViewModel
+import com.comic.superhero.core.presentation.ui.naviagtion.NavHub
+import com.comic.superhero.core.presentation.ui.naviagtion.navigationbar.BottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +40,7 @@ fun AppHub(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            BottomNavigationBar(
+            BottomBar(
                 modifier = Modifier.fillMaxWidth(),
                 curRoute = viewModel.curRoute.collectAsState().value,
                 onNavigate = navHostController::navigate,

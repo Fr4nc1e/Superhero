@@ -3,14 +3,15 @@ package com.comic.superhero.feature.home.presentation.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.comic.superhero.R
 import com.comic.superhero.core.data.util.Resource
 import com.comic.superhero.core.presentation.ui.util.CoreUiEvent
+import com.comic.superhero.core.presentation.ui.util.UiText
 import com.comic.superhero.feature.home.domain.model.SuperHero
 import com.comic.superhero.feature.home.presentation.event.HomeEvent
 import com.comic.superhero.feature.home.usecase.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -24,7 +25,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _superHeroList = MutableStateFlow<List<SuperHero>>(emptyList())
-    val superHeroList = _superHeroList.asStateFlow()
+
+    private val _superHero = MutableStateFlow(SuperHero())
+    val superHero = _superHero.asStateFlow()
 
     private val _loadingState = MutableStateFlow(false)
     val loadingState = _loadingState.asStateFlow()
@@ -42,16 +45,32 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.GetSuperHero -> {
-                if (_superHeroList.value.isEmpty()) {
+            HomeEvent.GetSuperHero -> {
+                if (_superHeroList.value.size <= 5) {
                     getSuperHero()
+                }
+            }
+
+            HomeEvent.NextHero -> {
+                if (_superHeroList.value.isNotEmpty() && idBufferList.value.size < 731) {
+                    _superHeroList.update { it.drop(1) }
+                    _superHero.update { _superHeroList.value.first() }
+                }
+                if (idBufferList.value.size == 731) {
+                    viewModelScope.launch {
+                        _eventFlow.emit(
+                            CoreUiEvent.ShowSnackbar(
+                                uiText = UiText.StringResource(R.string.no_more_heroes)
+                            )
+                        )
+                    }
                 }
             }
         }
     }
 
     private fun getSuperHero() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repeat(10) {
                 while (true) {
                     _heroId.value = (1..731).random()
@@ -68,11 +87,17 @@ class HomeViewModel @Inject constructor(
                             }
                         }
                         is Resource.Loading -> {
-                            _loadingState.update { isLoading ->
-                                isLoading
-                            }
+                            _loadingState.value = result.isLoading
                         }
                         is Resource.Success -> {
+                            result.data?.let { hero ->
+                                if (_superHero.value == SuperHero()) {
+                                    _superHero.update { hero }
+                                }
+                                _superHeroList.update { list ->
+                                    list + hero
+                                }
+                            }
                         }
                     }
                 }

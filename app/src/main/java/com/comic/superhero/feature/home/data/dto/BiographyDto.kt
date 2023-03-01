@@ -1,8 +1,9 @@
 package com.comic.superhero.feature.home.data.dto
 
+import com.comic.superhero.feature.home.domain.model.Biography
 import com.google.gson.annotations.SerializedName
 
-data class Biography(
+data class BiographyDto(
     @SerializedName("aliases")
     val aliases: List<String?>?,
     @SerializedName("alignment")
@@ -17,4 +18,11 @@ data class Biography(
     val placeOfBirth: String?,
     @SerializedName("publisher")
     val publisher: String?
-)
+) {
+    fun toBiography() = Biography(
+        firstAppearance = firstAppearance,
+        fullName = fullName,
+        placeOfBirth = placeOfBirth,
+        publisher = publisher
+    )
+}
