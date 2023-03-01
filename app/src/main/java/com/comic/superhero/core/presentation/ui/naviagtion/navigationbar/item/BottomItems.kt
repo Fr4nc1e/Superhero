@@ -2,7 +2,6 @@ package com.comic.superhero.core.presentation.ui.naviagtion.navigationbar.item
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,10 +22,5 @@ enum class BottomItems(
         route = Destination.SearchScreen.route,
         icon = Icons.Filled.Search,
         contentDescription = R.string.search
-    ),
-    Favorite(
-        route = Destination.FavoriteScreen.route,
-        icon = Icons.Filled.Favorite,
-        contentDescription = R.string.favorite
     )
 }

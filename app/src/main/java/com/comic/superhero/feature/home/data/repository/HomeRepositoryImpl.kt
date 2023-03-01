@@ -16,7 +16,6 @@ class HomeRepositoryImpl(
 ) : HomeRespository {
     override fun getSuperHero(heroId: String): Flow<Resource<SuperHero>> {
         return flow {
-            emit(Resource.Loading(true))
             val superHero = try {
                 api.getSuperHero(heroId).toSuperHero()
             } catch (e: IOException) {
@@ -29,7 +28,6 @@ class HomeRepositoryImpl(
                 null
             }
             emit(Resource.Success(data = superHero))
-            emit(Resource.Loading(false))
         }
     }
 }

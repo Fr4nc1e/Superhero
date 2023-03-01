@@ -61,65 +61,65 @@ fun DetailScreen(
     Box(modifier = modifier.fillMaxSize()) {
         if (isLoading) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
-        }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = lazyListState
+            ) {
+                item {
+                    Column(
+                        modifier.graphicsLayer {
+                            scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
+                            translationY = scrolledY * 0.5f
+                            previousOffset = lazyListState.firstVisibleItemScrollOffset
+                        }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(390.dp)
+                                .clip(RoundedCornerShape(bottomEnd = 50.dp, bottomStart = 50.dp))
+                        ) {
+                            ImageLoader(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .aspectRatio(1f),
+                                url = superHero.imageUrl
+                            )
+                        }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = lazyListState
-        ) {
-            item {
-                Column(
-                    modifier.graphicsLayer {
-                        scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
-                        translationY = scrolledY * 0.5f
-                        previousOffset = lazyListState.firstVisibleItemScrollOffset
+                        BasicInfo(
+                            superHero = superHero,
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
-                ) {
-                    Box(
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(360.dp))
+                }
+
+                item {
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(390.dp)
-                            .clip(RoundedCornerShape(bottomEnd = 50.dp, bottomStart = 50.dp))
+                            .wrapContentHeight(Alignment.CenterVertically)
+                            .clip(RoundedCornerShape(45.dp))
                     ) {
-                        ImageLoader(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .aspectRatio(1f),
-                            url = superHero.imageUrl
-                        )
+                        superHero.powerstats?.let {
+                            PowerStatsInfo(
+                                modifier = Modifier.padding(
+                                    top = 32.dp,
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 32.dp
+                                ),
+                                heroStats = it
+                            )
+                        }
                     }
-
-                    BasicInfo(
-                        superHero = superHero,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(360.dp))
-            }
-
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(Alignment.CenterVertically)
-                        .clip(RoundedCornerShape(45.dp))
-                ) {
-                    superHero.powerstats?.let {
-                        PowerStatsInfo(
-                            modifier = Modifier.padding(
-                                top = 32.dp,
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 32.dp
-                            ),
-                            heroStats = it
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }

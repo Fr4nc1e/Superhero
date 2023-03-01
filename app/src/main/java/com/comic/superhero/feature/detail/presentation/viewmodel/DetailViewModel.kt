@@ -37,6 +37,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun getSuperHero(heroId: String) {
+        _loadingState.update { true }
         viewModelScope.launch {
             homeUseCase.getSuperHero(heroId).collect { result ->
                 when (result) {
@@ -45,7 +46,7 @@ class DetailViewModel @Inject constructor(
                             _eventFlow.emit(CoreUiEvent.ShowSnackbar(uiText))
                         }
                     }
-                    is Resource.Loading -> { _loadingState.value = result.isLoading }
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         result.data?.let { hero ->
                             _superHero.update { hero }
@@ -54,5 +55,6 @@ class DetailViewModel @Inject constructor(
                 }
             }
         }
+        _loadingState.update { false }
     }
 }

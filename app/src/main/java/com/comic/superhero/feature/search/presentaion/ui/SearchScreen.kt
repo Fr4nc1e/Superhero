@@ -23,8 +23,11 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -47,12 +50,17 @@ fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
     val inputText = viewModel.inputText.collectAsState().value
     val heroes = viewModel.superHeroList.collectAsState().value
     val isLoading = viewModel.loadingState.collectAsState().value
     val lazyListState = rememberLazyListState()
     var scrolledY = 0f
     var previousOffset = 0
+
+    LaunchedEffect(viewModel.showKeyBoardState) {
+        focusRequester.requestFocus()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -84,11 +92,15 @@ fun SearchScreen(
                     onValueChange = {
                         viewModel.onEvent(SearchEvent.InputName(it))
                     },
-                    modifier = Modifier.fillMaxWidth().padding(8.dp).graphicsLayer {
-                        scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
-                        translationY = scrolledY * 0.5f
-                        previousOffset = lazyListState.firstVisibleItemScrollOffset
-                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester)
+                        .padding(8.dp)
+                        .graphicsLayer {
+                            scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
+                            translationY = scrolledY * 0.5f
+                            previousOffset = lazyListState.firstVisibleItemScrollOffset
+                        },
                     trailingIcon = {
                         IconButton(onClick = {
                             viewModel.onEvent(SearchEvent.SearchSuperHero(inputText))

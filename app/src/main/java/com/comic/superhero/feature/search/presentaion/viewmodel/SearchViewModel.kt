@@ -32,8 +32,17 @@ class SearchViewModel @Inject constructor(
     private val _loadingState = MutableStateFlow(false)
     val loadingState = _loadingState.asStateFlow()
 
+    private val _showKeyBoardState = MutableSharedFlow<Boolean>()
+    val showKeyBoardState = _showKeyBoardState.asSharedFlow()
+
     private val _eventFlow = MutableSharedFlow<CoreUiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            _showKeyBoardState.emit(true)
+        }
+    }
 
     fun onEvent(event: SearchEvent) {
         when (event) {
@@ -74,7 +83,11 @@ class SearchViewModel @Inject constructor(
                             is Resource.Success -> {
                                 result.data?.let { list ->
                                     _superHeroList.update { list }
-                                }
+                                } ?: _eventFlow.emit(
+                                    CoreUiEvent.ShowSnackbar(
+                                        UiText.StringResource(R.string.no_result)
+                                    )
+                                )
                             }
                         }
                     }

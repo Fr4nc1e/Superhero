@@ -28,6 +28,7 @@ fun AppHub(
     val snackbarHostState = remember {
         SnackbarHostState()
     }
+    val curRoute = viewModel.curRoute.collectAsState().value
 
     LaunchedEffect(navHostController) {
         navHostController.currentBackStackEntryFlow.collect { backStackEntry ->
@@ -40,12 +41,14 @@ fun AppHub(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            BottomBar(
-                modifier = Modifier.fillMaxWidth(),
-                curRoute = viewModel.curRoute.collectAsState().value,
-                onNavigate = navHostController::navigate,
-                onPopBackStack = navHostController::popBackStack
-            )
+            if (viewModel.inList()) {
+                BottomBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    curRoute = curRoute,
+                    onNavigate = navHostController::navigate,
+                    onPopBackStack = navHostController::popBackStack
+                )
+            }
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) {

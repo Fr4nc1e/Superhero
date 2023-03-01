@@ -71,6 +71,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getSuperHero() {
         viewModelScope.launch {
+            _loadingState.update { true }
             repeat(10) {
                 while (true) {
                     _heroId.value = (1..731).random()
@@ -86,7 +87,7 @@ class HomeViewModel @Inject constructor(
                                 _eventFlow.emit(CoreUiEvent.ShowSnackbar(uiText))
                             }
                         }
-                        is Resource.Loading -> { _loadingState.value = result.isLoading }
+                        is Resource.Loading -> {}
                         is Resource.Success -> {
                             result.data?.let { hero ->
                                 if (_superHero.value == SuperHero()) {
@@ -100,6 +101,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+            _loadingState.update { false }
         }
     }
 }

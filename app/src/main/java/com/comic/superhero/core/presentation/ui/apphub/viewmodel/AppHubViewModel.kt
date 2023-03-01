@@ -12,7 +12,13 @@ class AppHubViewModel @Inject constructor() : ViewModel() {
     private val _curRoute = MutableStateFlow("")
     val curRoute = _curRoute.asStateFlow()
 
+    private val showBottomBarList = listOf("home", "search")
+
     fun getCurRoute(route: String) {
         _curRoute.update { route }
+    }
+
+    fun inList(): Boolean {
+        return (_curRoute.value in showBottomBarList)
     }
 }
