@@ -27,7 +27,8 @@ fun BasicInfo(
     modifier: Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(8.dp)
+        modifier = modifier.fillMaxWidth().padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -47,7 +48,7 @@ fun BasicInfo(
             IconToggleButton(
                 checked = true,
                 onCheckedChange = {},
-                modifier = modifier.padding(end = 8.dp, top = 8.dp)
+                modifier = modifier.padding(end = 8.dp, start = 8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Favorite,
@@ -57,8 +58,17 @@ fun BasicInfo(
         }
 
         Column(
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            Text(
+                text = "Biography",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
             superHero.biography?.fullName?.let {
                 if (it != "-" && it.isNotBlank()) {
                     Text(
@@ -96,6 +106,91 @@ fun BasicInfo(
                 if (it != "-") {
                     Text(
                         text = "Publisher: $it",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+        }
+
+        Column(
+            modifier = Modifier.padding(start = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Appearance",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+            superHero.appearance?.height?.let {
+                if (it.isNotEmpty()) {
+                    Text(
+                        text = "Height: ${it[0]} | ${it[1]}",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+            superHero.appearance?.weight?.let {
+                if (it.isNotEmpty()) {
+                    Text(
+                        text = "Weight: ${it[0]} | ${it[1]}",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+            superHero.appearance?.hairColor?.let {
+                if (it != "-") {
+                    Text(
+                        text = "Hair Color: $it",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+            superHero.appearance?.eyeColor?.let {
+                if (it != "-") {
+                    Text(
+                        text = "Eye Color: $it",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+            superHero.appearance?.gender?.let {
+                if (it != "-") {
+                    Text(
+                        text = "Gender: $it",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+            superHero.appearance?.race?.let {
+                if (it != "-") {
+                    Text(
+                        text = "Race: $it",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontFamily = FontFamily.SansSerif,
                             fontWeight = FontWeight.Bold

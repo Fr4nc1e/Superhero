@@ -3,6 +3,8 @@ package com.comic.superhero.feature.home.presentation.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,6 +24,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +46,9 @@ fun HomeScreen(
     val context = LocalContext.current
     val superHero = viewModel.superHero.collectAsState().value
     val isLoading = viewModel.loadingState.collectAsState().value
+    val lazyListState = rememberLazyListState()
+    var scrolledY = 0f
+    var previousOffset = 0
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -55,12 +62,15 @@ fun HomeScreen(
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         if (isLoading) {
             CircularProgressIndicator(Modifier.align(Center))
         }
 
-        LazyColumn(Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = lazyListState
+        ) {
             item {
                 Box(
                     modifier = Modifier
@@ -78,7 +88,15 @@ fun HomeScreen(
                         )
                 ) {
                     ImageLoader(
-                        modifier = Modifier.fillMaxSize().aspectRatio(1f),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .aspectRatio(1f)
+                            .graphicsLayer {
+                                scrolledY +=
+                                    lazyListState.firstVisibleItemScrollOffset - previousOffset
+                                translationY = scrolledY * 0.5f
+                                previousOffset = lazyListState.firstVisibleItemScrollOffset
+                            },
                         url = superHero.imageUrl
                     )
                 }
@@ -96,7 +114,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(CenterVertically)
-                        .clip(RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp))
+                        .clip(RoundedCornerShape(50.dp))
                 ) {
                     superHero.powerstats?.let {
                         PowerStatsInfo(
@@ -110,6 +128,10 @@ fun HomeScreen(
                         )
                     }
                 }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(390.dp))
             }
         }
     }
